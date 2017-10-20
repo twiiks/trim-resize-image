@@ -100,9 +100,7 @@ def main():
                 image_output = ImageOps.expand(
                     image_output, border=border, fill='white')
                 name = os.path.splitext(image)[0]
-                print(ext)
                 full_name = "%s_%dx%d.%s" % (name, width, height, ext)
-                print(full_name)
                 image_output.save(os.path.join(result_dir + '/', full_name))
     print("!!!done!!!")
 

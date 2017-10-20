@@ -99,8 +99,15 @@ def main():
                 image_output = trim_resize_PIL(image_input, width, height)
                 image_output = ImageOps.expand(
                     image_output, border=border, fill='white')
+
                 name = os.path.splitext(image)[0]
-                full_name = "%s_%dx%d.%s" % (name, width, height, ext)
+                if '/' in path:
+                    path_out = path.split('/', 1)[-1]
+                    if not os.path.exists(result_dir + '/' + path_out):
+                        os.makedirs(result_dir + '/' +  path_out)
+                else:
+                    path_out = './'
+                full_name = "%s/%s_%dx%d.%s" % (path_out, name, width, height, ext)
                 image_output.save(os.path.join(result_dir + '/', full_name))
     print("!!!done!!!")
 

@@ -107,7 +107,7 @@ def main():
                         os.makedirs(result_dir + '/' +  path_out)
                 else:
                     path_out = './'
-                full_name = "%s/%s_%dx%d.%s" % (path_out, name, width, height, ext)
+                full_name = "%s/%s_%dx%d%s" % (path_out, name, width, height, ext)
                 image_output.save(os.path.join(result_dir + '/', full_name))
     print("!!!done!!!")
 

@@ -28,10 +28,10 @@ def parse_args():
         help='directory where result images is stored to',
         required=False)
     parser.add_argument(
-        '--angle',
-        type=int,
-        default=3,
-        help='angle to rotate',
+        '--angles',
+        type=str,
+        default='3,-3',
+        help='angles to rotate seperated with \',\' (eg. 3,-5,-30,45)',
         required=False)
     return parser.parse_args()
 
@@ -49,7 +49,11 @@ def main():
     if not os.path.exists(result_dir):
         os.makedirs(result_dir)
 
-    angle = args.angle
+    angles = args.angles
+    angles = angles.split(',')
+    angles = list(map(int, angles))
+    len_angles = len(angles)
+
     for path, _, images in os.walk(img_dir):
         count = 0
         for image in images:
@@ -62,7 +66,6 @@ def main():
                 count = 0
 
             with Image.open("%s/%s" % (path, image)) as image_input:
-                image_output = rotate_PIL(image_input, angle)
                 name = os.path.splitext(image)[0]
                 if '/' in path:
                     path_out = path.split('/', 1)[-1]
@@ -70,8 +73,11 @@ def main():
                         os.makedirs(result_dir + '/' +  path_out)
                 else:
                     path_out = './'
-                full_name = "%s/%s_rot_%d%s" % (path_out, name, angle, ext)
-                image_output.save(os.path.join(result_dir + '/', full_name))
+                for i in range(len_angles):
+                    angle = angles[i]
+                    image_output = rotate_PIL(image_input, angle)
+                    full_name = "%s/%s_rot_%d%s" % (path_out, name, angle, ext)
+                    image_output.save(os.path.join(result_dir + '/', full_name))
     print("!!!done!!!")
 
 
